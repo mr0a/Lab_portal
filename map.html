@@ -1,0 +1,88 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="map.js"></script>
+		<style>
+			body{
+				height: 100%;
+			}
+			#mapid{
+				height: 80vh;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>My First Google Map</h1>
+		<input type="button" value="Start Tracking" id="start">
+		<input type="button" value="Stop Tracking" id="stop">
+		<div id="mapid"></div>
+		<script>
+			var mymap = L.map('mapid').setView([20.5, 78.9], 13);
+			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+				maxZoom: 18,
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' + 
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1
+			}).addTo(mymap);
+			
+			
+			function ajaz(){
+				$.getJSON('mapdata.php?id=1', function(data){
+					console.log(data.latitude);
+					console.log(data.longitude);
+				});
+			}
+			setInterval(ajaz, 2000);
+			
+			setInterval(upd, 3000);
+			
+			var val1 = 25;
+			var  val2 = 75;
+			function upd(){
+				var marker = L.circle([val1, val2], 50, {
+					color: 'yellow',
+					fillColor: '#f03',
+					fillOpacity: 0.5
+				}).addTo(mymap).bindPopup("Hello");
+				marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+				val1 += 0.002;
+				val2 += 0.002;
+			}
+			
+			circle = L.circle([20.5, 78.9], 5000, {
+				color: 'red',
+				fillColor: '#f03',
+				fillOpacity: 0.5
+			}).addTo(mymap).bindPopup("Forest Area");
+			//upd(20.5, 78.9);
+			//upd(21.6, 79);
+			
+
+			// L.polygon([
+			// 	[51.509, -0.08],
+			// 	[51.503, -0.06],
+			// 	[51.51, -0.047]
+			// ]).addTo(mymap).bindPopup("I am a polygon.");
+
+
+			//var popup = L.popup();
+
+			// function onMapClick(e) {
+			// 	popup
+			// 		.setLatLng(e.latlng)
+			// 		.setContent("You clicked the map at " + e.latlng.toString())
+			// 		.openOn(mymap);
+			// }
+			// mymap.on('click', onMapClick);
+		</script>
+	</body>
+</html> 
